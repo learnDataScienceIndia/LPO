@@ -132,6 +132,9 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 8px 40px rgba(0, 0, 0, .14);
+      display: flex;
+      flex-direction: column;
+      min-height: 297mm;
     }
 
     /* ═══════════════ HEADER ═══════════════ */
@@ -145,40 +148,45 @@
       background: linear-gradient(90deg, var(--green) 0%, var(--blue) 100%);
     }
 
-    /* Info strip — 3 columns: Company | Get in touch | Logo */
+    /* Info strip */
     .info-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
+      display: flex;
       align-items: center;
+      background: #f8fafc;
       border-bottom: 2px solid var(--border);
-      background: var(--grey);
-    }
-
-    .info-cell {
-      padding: 13px 18px;
-    }
-
-    .info-cell:first-child {
-      border-right: 1.5px solid var(--border);
-    }
-
-    .info-cell:nth-child(2) {
-      border-right: 1.5px solid var(--border);
     }
 
     /* Logo column inside info strip */
     .info-logo {
-      padding: 10px 16px;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: center;
+      border-right: 1px solid var(--border);
+      background: #fff;
     }
 
     .info-logo img {
-      width: 90px;
-      height: 90px;
+      width: 110px;
+      height: 110px;
       object-fit: contain;
       display: block;
+    }
+
+    /* Details column */
+    .info-details {
+      flex: 1;
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #f8fafc;
+    }
+
+    .co-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     /* Editable text – remove default input look */
@@ -204,6 +212,11 @@
       display: block;
     }
 
+    .gt-val [contenteditable] {
+      display: inline-block;
+      width: auto;
+    }
+
     [contenteditable]:hover {
       border-color: var(--blue);
     }
@@ -222,34 +235,48 @@
     }
 
     .co-name {
-      font-size: 14px;
+      font-size: 20px;
       font-weight: 800;
       color: var(--green-dk);
     }
 
-    .co-trn {
+    .co-trn-pill {
+      background: var(--green-dk);
+      color: #fff;
       font-size: 11px;
-      color: var(--muted);
-      margin-top: 3px;
-      font-weight: 500;
-    }
-
-    .touch-lbl {
-      font-size: 11.5px;
       font-weight: 700;
-      color: var(--blue-dk);
-      margin-bottom: 4px;
+      padding: 4px 12px;
+      border-radius: 12px;
     }
 
-    .touch-body {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.65;
+    .co-divider {
+      height: 2px;
+      background: var(--green);
+      width: 100%;
+    }
+
+    .co-contact {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .co-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: var(--text);
+    }
+
+    .co-contact-item .icon {
+      font-size: 14px;
     }
 
     /* ═══════════════ BODY ═══════════════ */
     .po-body {
-      padding: 14px 20px 16px;
+      padding: 14px 20px 0px;
     }
 
     .sec-head {
@@ -532,6 +559,9 @@
     .po-footer {
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
 
     .fc1 {
@@ -564,8 +594,9 @@
       display: grid;
       grid-template-columns: 55% 45%;
       border-top: 3px solid var(--blue);
-      padding: 14px 20px 12px;
+      padding: 60px 20px 12px;
       gap: 12px;
+      margin-top: 24px;
     }
 
     /* Signature col */
@@ -674,14 +705,15 @@
 
     /* Bottom strip */
     .foot-strip {
-      background: linear-gradient(90deg, var(--blue-dk), var(--green-dk));
+      background: #0d6e52;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 20px;
-      font-size: 9.5px;
-      color: rgba(255, 255, 255, .75);
-      font-weight: 500;
+      padding: 10px 30px;
+      font-size: 11px;
+      color: #fff;
+      font-weight: 600;
+      margin-top: auto;
     }
 
     /* ═══════════════ PRINT ═══════════════ */
@@ -711,6 +743,16 @@
         max-width: 100%;
         box-shadow: none;
         border-radius: 0;
+        min-height: 100vh;
+      }
+
+      .co-contact {
+        flex-wrap: nowrap !important;
+        gap: 5px !important;
+      }
+      
+      .co-contact-item {
+        font-size: 9px !important;
       }
 
       * {
@@ -743,7 +785,7 @@
       }
 
       .foot-inner {
-        padding: 9px 13px !important;
+        padding: 60px 13px 9px !important;
       }
 
       .header-space {
@@ -792,6 +834,10 @@
       <button class="btn btn-add" onclick="addRow()">＋ Row</button>
       <button class="btn btn-add" onclick="addColumn()">＋ Column</button>
       <button class="btn btn-add" id="btnToggleVat" onclick="toggleVat()">＋ VAT</button>
+      <button class="btn btn-add" id="btnToggleCalc" onclick="toggleAutoCalc()">Auto-Calc: ON</button>
+      <button class="btn btn-add" onclick="saveProject()">Save (JSON)</button>
+      <button class="btn btn-add" onclick="document.getElementById('fileIn').click()">Load (JSON)</button>
+      <input type="file" id="fileIn" accept=".json" style="display:none;" onchange="loadProject(event)" />
     </div>
     <button class="btn btn-print" onclick="window.print()">
       <svg viewBox="0 0 24 24">
@@ -810,25 +856,34 @@
       <!-- Thin brand bar -->
       <div class="top-bar"></div>
 
-      <!-- Info strip: Company | Get in touch | Logo -->
+      <!-- Info strip: Logo | Details -->
       <div class="info-strip">
-        <div class="info-cell">
-          <div class="co-name" contenteditable="true" id="coName">Reloop Recycling FZE</div>
-          <div class="co-trn">
-            <span contenteditable="true" id="coTrn">Reloop TRN – 105170462300003</span>
-          </div>
-        </div>
-        <div class="info-cell">
-          <div class="touch-lbl" contenteditable="true" id="touchLbl">Get in touch</div>
-          <div class="touch-body">
-            Email us at <span contenteditable="true" id="coEmail">info@reloopglobal.com</span><br />
-            or call us at <span contenteditable="true" id="coPhone">+971 543252882</span><br />
-            <span contenteditable="true" id="coAddr">Reloop Recycling FZE – RA08 TC05, JAFZA, Dubai, UAE</span>
-          </div>
-        </div>
         <!-- Logo column -->
         <div class="info-logo">
           <img src="logo.png" alt="Reloop Recycling Logo" />
+        </div>
+        
+        <!-- Company Details -->
+        <div class="info-details">
+          <div class="co-header">
+            <div class="co-name" contenteditable="true" id="coName">Reloop Recycling FZE</div>
+            <div class="co-trn-pill" contenteditable="true" id="coTrn">TRN: 105170462300003</div>
+          </div>
+          <div class="co-divider"></div>
+          <div class="co-contact">
+            <div class="co-contact-item">
+              <span class="icon">✉️</span> <span contenteditable="true" id="coEmail">info@reloopglobal.com</span>
+            </div>
+            <div class="co-contact-item">
+              <span class="icon">📞</span> <span contenteditable="true" id="coPhone">+971 543252882</span>
+            </div>
+            <div class="co-contact-item">
+              <span class="icon">📍</span> <span contenteditable="true" id="coAddr">RA08 TC05, JAFZA, Dubai, UAE</span>
+            </div>
+            <div class="co-contact-item">
+              <span class="icon">🌐</span> <span contenteditable="true" id="coWeb">www.reloopglobal.com</span>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -837,8 +892,11 @@
     <main class="po-body">
 
       <!-- 1. Purchase Order Meta -->
-      <div class="sec-head" contenteditable="true">Purchase Order</div>
-      <table class="po-meta-tbl">
+      <div style="position:relative;">
+        <div class="sec-head" contenteditable="true">Purchase Order</div>
+        <button class="rm-col-btn no-print" onclick="addMetaField()" title="Add Field" style="position:absolute; right:0; top:50%; transform:translateY(-50%); width:auto; padding:2px 8px; border-radius:10px; background:var(--green-lt); color:var(--green-dk); font-weight:700;">＋ Field</button>
+      </div>
+      <table class="po-meta-tbl" id="poMetaTbl">
         <tr>
           <td class="lbl-td" contenteditable="true">PO NO :</td>
           <td>
@@ -854,8 +912,11 @@
       </table>
 
       <!-- 2. Shipper Details -->
-      <div class="sh-head" contenteditable="true">Shipper Details</div>
-      <table class="sh-tbl">
+      <div style="position:relative;">
+        <div class="sh-head" contenteditable="true">Shipper Details</div>
+        <button class="rm-col-btn no-print" onclick="addShipperField()" title="Add Field" style="position:absolute; right:2px; top:50%; transform:translateY(-50%); width:auto; padding:2px 8px; border-radius:10px; background:rgba(0,0,0,0.1); color:var(--text); font-weight:700;">＋ Field</button>
+      </div>
+      <table class="sh-tbl" id="shTbl">
         <tr>
           <td class="sl" contenteditable="true">Company :</td>
           <td>
@@ -899,14 +960,14 @@
                 <span contenteditable="true">5% VAT</span>
               </div>
             </td>
-            <td class="gt-val" id="vatVal" style="color:var(--text);"><span id="curSymVat">AED</span> 0.00</td>
+            <td class="gt-val" style="color:var(--text);"><span id="curSymVat">AED</span> <span id="vatVal" contenteditable="true">0.00</span></td>
             <td class="no-print" style="background:transparent;border:none;text-align:center;vertical-align:middle;">
               <button class="rm-btn" onclick="toggleVat()" title="Remove VAT">✕</button>
             </td>
           </tr>
           <tr class="gt-tr">
             <td colspan="4" class="gt-lbl foot-span"><span contenteditable="true">Grand Total</span></td>
-            <td class="gt-val" id="gtVal"><span id="curSymDisplay">AED</span> 0.00</td>
+            <td class="gt-val"><span id="curSymDisplay">AED</span> <span id="gtVal" contenteditable="true">0.00</span></td>
             <td class="no-print" style="background:transparent;border:none;"></td>
           </tr>
         </tfoot>
@@ -979,8 +1040,8 @@
       <!-- Bottom strip -->
       <div class="foot-strip">
         <span id="strip-phone" contenteditable="true">📞 +971 543252882</span>
-        <span contenteditable="true">🌐 www.reloopglobal.com</span>
-        <span contenteditable="true">info@reloopglobal.com</span>
+        <span id="strip-web" contenteditable="true">🌐 www.reloopglobal.com</span>
+        <span id="strip-email" contenteditable="true">info@reloopglobal.com</span>
       </div>
     </footer>
 
@@ -991,15 +1052,78 @@
     /* ── State ── */
     let rowId = 0;
     let curCode = 'AED';
+    let isAutoCalc = true;
 
     const SYM = { AED: 'AED', USD: '$', EUR: '€', GBP: '£', INR: '₹' };
 
+    /* ── Auto-save observer ── */
+    function attachAutoSave() {
+      document.getElementById('po-doc').addEventListener('input', () => {
+        saveToLocal();
+      });
+      // Allow editing totals when auto-calc is off
+      const gt = document.getElementById('gtVal');
+      const vat = document.getElementById('vatVal');
+      if(gt) gt.addEventListener('input', saveToLocal);
+      if(vat) vat.addEventListener('input', saveToLocal);
+    }
+
+    /* ── Custom Meta / Shipper Fields ── */
+    function addMetaField() {
+      const tbl = document.getElementById('poMetaTbl');
+      const tr = document.createElement('tr');
+      tr.className = 'custom-meta-row';
+      tr.innerHTML = `
+        <td class="lbl-td">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div contenteditable="true" data-placeholder="Label" class="edit-div" style="width:auto;flex:1;">New Field</div>
+            <button class="rm-btn no-print" onclick="this.closest('tr').remove(); saveToLocal();" style="padding:0 4px;font-size:12px;">✕</button>
+          </div>
+        </td>
+        <td>
+          <div contenteditable="true" class="edit-div" data-placeholder="Value"></div>
+        </td>
+      `;
+      tr.addEventListener('input', saveToLocal);
+      tbl.appendChild(tr);
+      saveToLocal();
+    }
+
+    function addShipperField() {
+      const tbl = document.getElementById('shTbl');
+      const tr = document.createElement('tr');
+      tr.className = 'custom-sh-row';
+      tr.innerHTML = `
+        <td class="sl">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div contenteditable="true" data-placeholder="Label" class="edit-div" style="width:auto;flex:1;">New Field</div>
+            <button class="rm-btn no-print" onclick="this.closest('tr').remove(); saveToLocal();" style="padding:0 4px;font-size:12px;">✕</button>
+          </div>
+        </td>
+        <td colspan="3">
+          <div contenteditable="true" class="edit-div" data-placeholder="Value"></div>
+        </td>
+      `;
+      tr.addEventListener('input', saveToLocal);
+      tbl.appendChild(tr);
+      saveToLocal();
+    }
+
     /* ── Init ── */
     document.addEventListener('DOMContentLoaded', () => {
-      const d = new Date();
-      const mo = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      document.getElementById('poDate').innerText = `${d.getDate()}-${mo[d.getMonth()]}-${d.getFullYear()}`;
-      for (let i = 0; i < 8; i++) addRow();
+      if (!loadFromLocal()) {
+        const d = new Date();
+        const mo = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        document.getElementById('poDate').innerText = `${d.getDate()}-${mo[d.getMonth()]}-${d.getFullYear()}`;
+      }
+      
+      // Ensure there are at least 9 rows when the tool opens
+      const currentRows = document.querySelectorAll('#tbody tr').length;
+      for (let i = currentRows; i < 9; i++) {
+        addRow();
+      }
+      
+      attachAutoSave();
     });
 
     /* ── Add Row ── */
@@ -1033,6 +1157,7 @@
 
       // Qty or Rate changed → recalc Amount (plain number, no currency prefix)
       function qrChange() {
+        if (!isAutoCalc) { saveToLocal(); return; }
         const q = parseFloat(qi.innerText) || 0;
         const r = parseFloat(ri.innerText) || 0;
         if (q > 0 && r > 0) {
@@ -1045,10 +1170,12 @@
           if (uEl) uEl.textContent = '';
         }
         recalcTotal();
+        saveToLocal();
       }
 
       ai.addEventListener('input', () => {
-        recalcTotal();
+        if(isAutoCalc) recalcTotal();
+        saveToLocal();
       });
 
       qi.addEventListener('input', qrChange);
@@ -1078,11 +1205,15 @@
 
     /* ── Recalc Grand Total ── */
     function recalcTotal() {
+      const sym = SYM[curCode] || curCode;
+      document.getElementById('curSymVat').textContent = sym;
+      document.getElementById('curSymDisplay').textContent = sym;
+
+      if (!isAutoCalc) return;
       let subtotal = 0;
       document.querySelectorAll('.ai').forEach(inp => {
         subtotal += parseFloat(inp.innerText) || 0;
       });
-      const sym = SYM[curCode] || curCode;
 
       let vatAmount = 0;
       const vatRow = document.getElementById('vatRow');
@@ -1090,15 +1221,10 @@
         vatAmount = subtotal * 0.05;
       }
 
-      document.getElementById('curSymVat').textContent = sym;
-      document.getElementById('vatVal').innerHTML =
-        `<span id="curSymVat">${sym}</span> ${fmtN(vatAmount)}`;
+      document.getElementById('vatVal').innerText = fmtN(vatAmount);
 
       let total = subtotal + vatAmount;
-
-      document.getElementById('curSymDisplay').textContent = sym;
-      document.getElementById('gtVal').innerHTML =
-        `<span id="curSymDisplay">${sym}</span> ${fmtN(total)}`;
+      document.getElementById('gtVal').innerText = fmtN(total);
     }
 
     /* ── Add / Remove Column ── */
@@ -1141,6 +1267,233 @@
       spans.forEach(span => {
         span.colSpan = 4 + customColCount;
       });
+    }
+
+    /* ── Toggle Auto-Calc ── */
+    function toggleAutoCalc() {
+      isAutoCalc = !isAutoCalc;
+      const btn = document.getElementById('btnToggleCalc');
+      if(btn) btn.textContent = isAutoCalc ? 'Auto-Calc: ON' : 'Auto-Calc: OFF';
+      if(isAutoCalc) recalcTotal();
+      saveToLocal();
+    }
+
+    /* ── JSON Save / Load ── */
+    function buildProjectData() {
+      const data = {
+        coName: document.getElementById('coName')?.innerText,
+        coTrn: document.getElementById('coTrn')?.innerText,
+        coEmail: document.getElementById('coEmail')?.innerText,
+        coPhone: document.getElementById('coPhone')?.innerText,
+        coAddr: document.getElementById('coAddr')?.innerText,
+        coWeb: document.getElementById('coWeb')?.innerText,
+        poNo: document.getElementById('poNo')?.innerText,
+        poDate: document.getElementById('poDate')?.innerText,
+        shCo: document.getElementById('shCo')?.innerText,
+        shCont: document.getElementById('shCont')?.innerText,
+        shAddr: document.getElementById('shAddr')?.innerText,
+        shEmail: document.getElementById('shEmail')?.innerText,
+        stripPhone: document.getElementById('strip-phone')?.innerText,
+        stripWeb: document.getElementById('strip-web')?.innerText,
+        stripEmail: document.getElementById('strip-email')?.innerText,
+        fPhone: document.getElementById('f-phone')?.innerText,
+        fEmail: document.getElementById('f-email')?.innerText,
+        fAddr: document.getElementById('f-addr')?.innerText,
+        vatValManual: document.getElementById('vatVal')?.innerText,
+        gtValManual: document.getElementById('gtVal')?.innerText,
+        curCode: curCode,
+        isAutoCalc: isAutoCalc,
+        customColCount: customColCount,
+        vatVisible: !document.getElementById('vatRow')?.classList.contains('hidden-row'),
+        rows: [],
+        customMeta: [],
+        customShipper: []
+      };
+      
+      document.querySelectorAll('#poMetaTbl .custom-meta-row').forEach(tr => {
+        const divs = tr.querySelectorAll('.edit-div');
+        if(divs.length >= 2) data.customMeta.push({ lbl: divs[0].innerText, val: divs[1].innerText });
+      });
+      document.querySelectorAll('#shTbl .custom-sh-row').forEach(tr => {
+        const divs = tr.querySelectorAll('.edit-div');
+        if(divs.length >= 2) data.customShipper.push({ lbl: divs[0].innerText, val: divs[1].innerText });
+      });
+
+      const customHeaders = [];
+      document.querySelectorAll('th.custom-col span').forEach(sp => customHeaders.push(sp.innerText));
+      data.customHeaders = customHeaders;
+
+      document.querySelectorAll('#tbody tr').forEach(tr => {
+        const id = tr.id.substring(1);
+        const rowData = {
+          d: tr.querySelector(`#d${id}`)?.innerText || '',
+          q: tr.querySelector(`#q${id}`)?.innerText || '',
+          rt: tr.querySelector(`#rt${id}`)?.innerText || '',
+          a: tr.querySelector(`#a${id}`)?.innerText || ''
+        };
+        const cCells = [];
+        tr.querySelectorAll('td.custom-cell .ei').forEach(ei => cCells.push(ei.innerText));
+        rowData.custom = cCells;
+        data.rows.push(rowData);
+      });
+      return data;
+    }
+
+    function saveProject() {
+      const data = buildProjectData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "po-project.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function saveToLocal() {
+      const data = buildProjectData();
+      localStorage.setItem('po-project', JSON.stringify(data));
+    }
+
+    function applyProjectData(data) {
+      if(!data) return;
+      
+      // Basic text fields
+      const fmap = {
+        'coName': data.coName, 'coTrn': data.coTrn, 'coEmail': data.coEmail, 'coPhone': data.coPhone,
+        'coAddr': data.coAddr, 'coWeb': data.coWeb, 'poNo': data.poNo, 'poDate': data.poDate,
+        'shCo': data.shCo, 'shCont': data.shCont, 'shAddr': data.shAddr, 'shEmail': data.shEmail,
+        'strip-phone': data.stripPhone, 'strip-web': data.stripWeb, 'strip-email': data.stripEmail,
+        'f-phone': data.fPhone, 'f-email': data.fEmail, 'f-addr': data.fAddr
+      };
+      for(let k in fmap) {
+        if(fmap[k] !== undefined && document.getElementById(k)) {
+          document.getElementById(k).innerText = fmap[k];
+        }
+      }
+
+      // Currency
+      if(data.curCode) {
+        curCode = data.curCode;
+        if(document.getElementById('curSel')) document.getElementById('curSel').value = curCode;
+      }
+
+      // Auto Calc
+      if(data.isAutoCalc !== undefined) {
+        isAutoCalc = data.isAutoCalc;
+        const btn = document.getElementById('btnToggleCalc');
+        if(btn) btn.textContent = isAutoCalc ? 'Auto-Calc: ON' : 'Auto-Calc: OFF';
+      }
+
+      // VAT
+      const vatRow = document.getElementById('vatRow');
+      if(data.vatVisible) {
+        vatRow?.classList.remove('hidden-row');
+      } else {
+        vatRow?.classList.add('hidden-row');
+      }
+
+      // Reset columns
+      while(customColCount > 0) {
+        removeColumn(document.querySelector('.rm-col-btn'));
+      }
+      // Add columns
+      if(data.customColCount) {
+        for(let i=0; i<data.customColCount; i++) {
+          addColumn();
+        }
+        if(data.customHeaders) {
+          const headers = document.querySelectorAll('th.custom-col span');
+          data.customHeaders.forEach((h, i) => { if(headers[i]) headers[i].innerText = h; });
+        }
+      }
+
+      if(data.vatValManual !== undefined && !data.isAutoCalc) {
+        document.getElementById('vatVal').innerText = data.vatValManual;
+      }
+      if(data.gtValManual !== undefined && !data.isAutoCalc) {
+        document.getElementById('gtVal').innerText = data.gtValManual;
+      }
+
+      // Custom Meta & Shipper Rows
+      document.querySelectorAll('#poMetaTbl .custom-meta-row').forEach(tr => tr.remove());
+      if(data.customMeta) {
+        data.customMeta.forEach(cm => {
+          addMetaField();
+          const rows = document.querySelectorAll('#poMetaTbl .custom-meta-row');
+          const last = rows[rows.length-1];
+          const divs = last.querySelectorAll('.edit-div');
+          if(divs.length >= 2) {
+            divs[0].innerText = cm.lbl;
+            divs[1].innerText = cm.val;
+          }
+        });
+      }
+
+      document.querySelectorAll('#shTbl .custom-sh-row').forEach(tr => tr.remove());
+      if(data.customShipper) {
+        data.customShipper.forEach(cs => {
+          addShipperField();
+          const rows = document.querySelectorAll('#shTbl .custom-sh-row');
+          const last = rows[rows.length-1];
+          const divs = last.querySelectorAll('.edit-div');
+          if(divs.length >= 2) {
+            divs[0].innerText = cs.lbl;
+            divs[1].innerText = cs.val;
+          }
+        });
+      }
+
+      // Rows
+      document.getElementById('tbody').innerHTML = '';
+      rowId = 0;
+      if(data.rows && data.rows.length) {
+        data.rows.forEach(r => {
+          addRow();
+          const id = rowId;
+          if(document.getElementById(`d${id}`)) document.getElementById(`d${id}`).innerText = r.d;
+          if(document.getElementById(`q${id}`)) document.getElementById(`q${id}`).innerText = r.q;
+          if(document.getElementById(`rt${id}`)) document.getElementById(`rt${id}`).innerText = r.rt;
+          if(document.getElementById(`a${id}`)) document.getElementById(`a${id}`).innerText = r.a;
+          
+          if(r.custom && r.custom.length) {
+            const tr = document.getElementById(`r${id}`);
+            const cCells = tr.querySelectorAll('td.custom-cell .ei');
+            r.custom.forEach((c, i) => { if(cCells[i]) cCells[i].innerText = c; });
+          }
+        });
+      }
+      
+      recalcTotal();
+      updateRowCount();
+    }
+
+    function loadProject(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          applyProjectData(data);
+          saveToLocal();
+        } catch (err) {
+          alert("Invalid JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function loadFromLocal() {
+      const saved = localStorage.getItem('po-project');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          applyProjectData(data);
+          return true;
+        } catch (e) { }
+      }
+      return false;
     }
 
     /* ── Toggle VAT ── */
